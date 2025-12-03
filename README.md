@@ -1,1 +1,1 @@
-![office_img](/main/managed-office.jpg)
+![office_img](/blob/main/managed-office.jpg)
