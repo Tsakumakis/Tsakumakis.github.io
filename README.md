@@ -1,1 +1,1 @@
-![Book logo](main/managed-office.jpg)
+![office_img](/main/managed-office.jpg)
