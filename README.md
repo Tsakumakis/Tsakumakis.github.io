@@ -1,2 +1,1 @@
-# Tsakumakis.github.io
-dgg
+![Book logo](main/managed-office.jpg)
