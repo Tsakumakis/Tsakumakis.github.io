@@ -21,7 +21,6 @@
         #fun-menu button:hover { background: #b54562;}
     </style>
       <div id="fun-menu">
-      
     <style>
       #rubiks-menu {
         position: absolute;
@@ -49,7 +48,6 @@
       <button onclick="rotateSlice('F')">F (Front, z=-2)</button>
       <button onclick="rotateSlice('B')">B (Back, z=-4)</button>
     </div>
-    
     <!-- SINGLE SCENE with camera added -->
     <a-scene>
       <!-- Camera with orbit controls ONLY -->
@@ -70,7 +68,6 @@
           enableRotate: true;
           screenSpacePanning: true"
       ></a-entity>
-      
       <a-assets>
         <a-asset-item id="cube-model" src="https://kostasgian21.github.io/computer_graphics/rubiks_cube_standard_solid_v3.glb"></a-asset-item>
         <img id="skyTexture" src="https://res.cloudinary.com/myhq/image/upload/w_1920/f_auto/web/ssr/common/whymyhq/new-banner/managed-office.png" crossorigin="anonymous"/>
@@ -83,7 +80,6 @@
       <a-entity id="cube-cluster"></a-entity>
       <a-plane position="0 0 -4" rotation="-90 0 0" width="4" height="4" color="#7BC8A4"></a-plane>
     </a-scene>
-
     <script>
     // Cube parameters
     const positions = [-1, 0, 1];
@@ -91,7 +87,6 @@
     const layersZ = [-2, -3, -4];
     const cubeSize = 0.8;
     const model = '#cube-model';
-
     // Slices definitions, with their centers and match functions
     const sliceDefs = {
       U:  {center: [0,3,-3],  match: (x,y,z) => y===3, axis: 'y', angle: 90},      // Top row
@@ -102,7 +97,6 @@
       F:  {center: [0,2,-2],  match: (x,y,z) => z===-2, axis: 'z', angle: 90},     // Front slice
       B:  {center: [0,2,-4],  match: (x,y,z) => z===-4, axis: 'z', angle: -90},    // Back slice
     };
-
     // Create all cubelets under cube-cluster, no duplicates
     const cluster = document.getElementById('cube-cluster');
     let cubelets = [];
@@ -122,7 +116,6 @@
         }
       }
     }
-
     // Utility: Convert string rotation to object
     function parseRotation(rot) {
       if (typeof rot === 'string') {
@@ -131,13 +124,11 @@
       }
       return rot || {x:0, y:0, z:0};
     }
-
     // Rotate slice animation
     function rotateSlice(face) {
       const sliceDef = sliceDefs[face];
       if (!sliceDef) return;
       const {center, match, axis, angle} = sliceDef;
-
       // Find affected cubelets
       let affected = cubelets.filter(cubelet => {
         const x = parseInt(cubelet.getAttribute('data-x'));
@@ -145,20 +136,17 @@
         const z = parseInt(cubelet.getAttribute('data-z'));
         return match(x,y,z);
       });
-
       // For each affected cubelet, animate rotation about the slice center
       affected.forEach(cubelet => {
         // Get current position and rotation
         let pos = cubelet.getAttribute('position');
         let rot = parseRotation(cubelet.getAttribute('rotation'));
-
         // Compute position relative to slice center
         let rel = {
           x: pos.x - center[0],
           y: pos.y - center[1],
           z: pos.z - center[2]
         };
-
         // Rotate rel position around axis by angle
         let rad = angle * Math.PI/180;
         let newRel = {...rel};
@@ -172,14 +160,12 @@
           newRel.x = rel.x * Math.cos(rad) - rel.y * Math.sin(rad);
           newRel.y = rel.x * Math.sin(rad) + rel.y * Math.cos(rad);
         }
-
         // Compute new world position
         let newPos = {
           x: center[0] + Math.round(newRel.x),
           y: center[1] + Math.round(newRel.y),
           z: center[2] + Math.round(newRel.z)
         };
-
         // Animate position
         cubelet.setAttribute('animation__pos', {
           property: 'position',
@@ -187,7 +173,6 @@
           dur: 600,
           easing: 'easeInOutQuad'
         });
-
         // Animate rotation (just axis for visual)
         let newRot = {...rot};
         if (axis === 'x') {
@@ -203,7 +188,6 @@
           dur: 600,
           easing: 'easeInOutQuad'
         });
-
         // Update stored position/rotation after animation completes
         setTimeout(() => {
           cubelet.setAttribute('position', `${newPos.x} ${newPos.y} ${newPos.z}`);
@@ -218,7 +202,6 @@
       });
     }
     window.rotateSlice = rotateSlice;
-    
     // reset cube to initial state
     function resetCube(){
       cubelets.forEach(cubelet => {
@@ -229,7 +212,6 @@
         cubelet.setAttribute('rotation', `0 0 0`);
       })
     }
-
     // Auto shuffle toggle: keeps applying random moves until stopped
     let _autoShuffleId = null;
     function toggleAutoShuffle() {
@@ -244,11 +226,9 @@
         rotateSlice(face);
       }, 700);
     }
-
     window.resetCube = resetCube;
     window.toggleAutoShuffle = toggleAutoShuffle;
     </script>
-    
     <!-- Bottom menu: reset + two extra buttons -->
     <style>
       #bottom-menu {
@@ -266,7 +246,6 @@
       #bottom-menu button { margin: 0 6px; padding: 6px 10px; border-radius: 5px; border: none; background: #333; color: white; cursor: pointer; }
       #bottom-menu button:hover { background: #555; }
     </style>
-    
     <div id="bottom-menu">
       <button onclick="resetCube()">Reset Cube</button>
       <button onclick="toggleAutoShuffle()">Auto Shuffle</button>
