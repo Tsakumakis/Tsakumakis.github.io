@@ -3,6 +3,7 @@
   <head>
     <meta charset="utf-8">
     <script src="https://aframe.io/releases/1.7.0/aframe.min.js"></script>
+    
     <style>
       #rubiks-menu {
         position: absolute;
@@ -19,9 +20,6 @@
     </style>
   </head>
   <body>
-  <!-- 3D Name: KOSTS -->
-</a-text>
-</a-text>
     <div id="rubiks-menu">
       <b>Rotate Slice (grouped, centered):</b><br>
       <button onclick="rotateSlice('U')">U (Top, y=3)</button>
@@ -36,20 +34,28 @@
         <a-asset-item id="cube-model" src="https://kostasgian21.github.io/computer_graphics/rubiks_cube_standard_solid_v3.glb"></a-asset-item>
        
 </a-assets>
-        <img id="skyTexture" src="https://kostasgian21.github.io/computer_graphics/360-degree_Panorama_of_the_Southern_Sky.jpg" crossorigin="anonymous"/>
+        <img id="skyTexture" src="https://Tsakumakis.github.io/backround_image" crossorigin="anonymous"/>
       </a-assets>
       <a-asset-item id="name-model" src="https://Tsakumakis.github.io/3dname.glb"></a-asset-item>
       <a-sky src="#skyTexture"></a-sky>
-      <a-entity light="type: directional; intensity:6.2; color:#fff" position="1 4 2"></a-entity>
+      <a-entity light="type: directional; intensity:2; color:#fff" position="1 4 3 rotation="0 90 0"></a-entity>
+      <a-entity light="type: directional; intensity:2; color:#fff" position="-2 4 -3 rotation="0 -90 0"></a-entity>
+      <a-entity light="type: directional; intensity:2; color:#fff" position="0 3 0 rotation="0 0 0"></a-entity>
+      <a-entity light="type: directional; intensity:2; color:#fff" position="0 -1 0 rotation="90 0 0"></a-entity>  
       <a-entity light="type: ambient; intensity:2.35; color:#fff"></a-entity>
-      <a-entity light="type: point; intensity:3.6; distance:10" position="-3 2 0"></a-entity>
-      <a-entity light="type: point; intensity:3.6; distance:10" position="0 1 -5"></a-entity>
-      <a-entity id="cube-cluster"></a-entity>s
+      <a-entity light="type: point; intensity:5; distance:10" position="-3 2 0"></a-entity>
+      <a-entity light="type: point; intensity:5; distance:10" position="0 5 0"></a-entity>
+      <a-entity light="type: point; intensity:5; distance:10" position="3 2 0"></a-entity>
+      <a-entity light="type: point; intensity:5; distance:10" position="0 1 -5"></a-entity>
+      <a-entity shadow="cast: true; receive: true"></a-entity>
+      <a-entity id="cube-cluster"></a-entity>
 <a-entity gltf-model="#name-model"
           position="0 4 -3"
           scale="50 50 50"
           rotation="90 90 90">
 </a-entity>
+    <--! camera controls -->
+      <a-entity camera position="0 2 5" look-controls wasd-controls="acceleration:100" position="0 1.6 0"></a-entity>
 </a-entity>
     <script>
     // Cube parameters
