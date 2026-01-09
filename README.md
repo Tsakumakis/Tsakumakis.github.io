@@ -28,6 +28,7 @@
       <button onclick="rotateSlice('M')">M (middle, x=0)</button>
       <button onclick="rotateSlice('F')">F (Front, z=-2)</button>
       <button onclick="rotateSlice('B')">B (Back, z=-4)</button>
+     <button onclick="reset('Reset')">Reset</button>
     </div>
     <a-scene stats>
       <a-assets>
@@ -110,7 +111,16 @@
         }
       }
     }
-
+    //reset function
+function reset(){
+  cubelets.forEach(cubelet => {
+    const x = parseInt(cubelet.getAttribute('data-x'));
+    const y = parseInt(cubelet.getAttribute('data-y'));
+    const z = parseInt(cubelet.getAttribute('data-z'));
+    cubelet.setAttribute('position', `${x} ${y} ${z}`);
+    cubelet.setAttribute('rotation', `0 0 0`);
+  });
+}
     // Utility: Convert string rotation to object
     function parseRotation(rot) {
       if (typeof rot === 'string') {
@@ -120,11 +130,20 @@
       return rot || {x:0, y:0, z:0};
     }
 
+    // Lock to prevent overlapping rotations
+    let isRotating = false;
+
     // Rotate slice animation
     function rotateSlice(face) {
+      // Prevent clicks during animation
+      if (isRotating) return;
+      
       const sliceDef = sliceDefs[face];
       if (!sliceDef) return;
       const {center, match, axis, angle} = sliceDef;
+      
+      // Lock rotations
+      isRotating = true;
 
       // Find affected cubelets
       let affected = cubelets.filter(cubelet => {
@@ -204,6 +223,11 @@
           cubelet.removeAttribute('animation__rot');
         }, 650);
       });
+      
+      // Unlock after animation completes
+      setTimeout(() => {
+        isRotating = false;
+      }, 650);
     }
     window.rotateSlice = rotateSlice;
     </script>
